@@ -6,31 +6,13 @@
 #include <string>
 
 #include "Utils.h"
+#include "glUtils.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-const char* GlErrorValues[] = {"Inavlid Enum","Invalid Value","Invalid Operation", "Stack Overflow","Stack_UnderFlow","Out Of Memeory"};
-#define GetGlErrorString(x) (((x-0x500)>=0 && (x-0x500<6))?GlErrorValues[x-0x500]:"UnKnown")
-#define ASSERT(x) if(!(x)) __debugbreak();
-#define GLCall(x) GLClearError();\
-x;\
-ASSERT(GLLogCall(#x, __FILE__, __LINE__))
 
-static void GLClearError()
-{
-	while (glGetError() != GL_NO_ERROR);
-}
-static bool GLLogCall(const char* FunctionName, const char* File, int Line)
-{
-	while (GLenum error = glGetError())
-	{
-		std::cout << "[OpenGL Error]: " <<GetGlErrorString(error)<<std::endl;
-		std::cout << "[FunctionName]:" << FunctionName <<std::endl<<"[File]:"<< File << std::endl<<"[Line]:" << Line<<std::endl;
-		std::cout << "------------------------------------------------------------------------------------------";
-		return false;
-	}
-	return true;
-}
 struct ShaderProgramSource
 {
 	std::string VertexShader;
@@ -102,10 +84,6 @@ static unsigned int CreateShader(const std::string i_VertexShader, const std::st
 	return program;
 
 }
-struct Test
-{
-	int a, b;
-};
 
 int main(void)
 {
@@ -126,62 +104,50 @@ int main(void)
 	{
 		std::cout << "Error" << std::endl;
 	}
-	float vertexPositions[] = 
-	{	-0.5f,-0.5f,
-		0.0f,-0.5f,
-		0.0f, 0.5f,
-		-0.5f,  0.5f
-		
-	};
-	unsigned short indices[] =
 	{
-		0,1,2,
-		2,3,0
-	};
-	std::cout << glGetString(GL_VERSION) << std::endl;
-	/* Verterx Buffer Data*/
-	unsigned int buffer;
-	GLCall(glGenBuffers(1, &buffer));
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-	GLCall(glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), vertexPositions, GL_STATIC_DRAW));
-	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
-	GLCall(glEnableVertexAttribArray(0));
-	/*Index Buffer Data*/
-	unsigned int ibo;
-	GLCall(glGenBuffers(1, &ibo));
-	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned short), indices, GL_STATIC_DRAW));
+		float vertexPositions[] =
+		{ -0.5f,-0.5f,
+			0.0f,-0.5f,
+			0.0f, 0.5f,
+			-0.5f,  0.5f
 
-	ShaderProgramSource shaderSource = ParseShader("Resources/Shaders/BasicTriangle.shader");
-	/*std::cout << "Vertex Shader" << std::endl;
-	std::cout << shaderSource.VertexShader;
-	std::cout << "Fragment Shader" << std::endl;
-	std::cout << shaderSource.FragmentShader << std::endl;*/
-	unsigned int shader = CreateShader(shaderSource.VertexShader,shaderSource.FragmentShader);
-	GLCall(glUseProgram(shader));
+		};
+		unsigned int indices[] =
+		{
+			0,1,2,
+			2,3,0
+		};
+		std::cout << glGetString(GL_VERSION) << std::endl;
+		VertexBuffer vb(vertexPositions,8*sizeof(float));
+		GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
+		GLCall(glEnableVertexAttribArray(0));
+		IndexBuffer ib(indices,6);
+		ShaderProgramSource shaderSource = ParseShader("Resources/Shaders/BasicTriangle.shader");	
+		unsigned int shader = CreateShader(shaderSource.VertexShader, shaderSource.FragmentShader);
+		GLCall(glUseProgram(shader));
 
-	int uColorLocation = glGetUniformLocation(shader,"u_Color");
-	ASSERT(uColorLocation != -1);
+		int uColorLocation = glGetUniformLocation(shader, "u_Color");
+		ASSERT(uColorLocation != -1);
 
-	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
-	{
-		/* Render here */
-		//std::cout << (rand() % 255 + 0)<<std::endl;
-		glClear(GL_COLOR);
-		
-		//glDrawArrays(GL_TRIANGLES,0,3);
-		GLCall(glUniform4f(uColorLocation, GetNCV(RandomInRange(1, 255)), 0.0f, 0.0f, 0.1f));
-		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr));
+		/* Loop until the user closes the window */
+		while (!glfwWindowShouldClose(window))
+		{
+			glClear(GL_COLOR);
 
-		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
+			//glDrawArrays(GL_TRIANGLES,0,3);
+			GLCall(glUniform4f(uColorLocation, GetNCV(RandomInRange(1, 255)), 0.0f, 0.0f, 0.1f));
+			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
-		/* Poll for and process events */
-		glfwPollEvents();
+			/* Swap front and back buffers */
+			glfwSwapBuffers(window);
+
+			/* Poll for and process events */
+			glfwPollEvents();
+		}
+
+		glDeleteProgram(shader);
 	}
-
-	glDeleteProgram(shader);
+	
 	glfwTerminate();
 	return 0;
 }

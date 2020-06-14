@@ -154,13 +154,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\IndexBuffer.cpp" />
     <ClCompile Include="Source\Source.cpp" />
+    <ClCompile Include="Source\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\BasicTriangle.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\glUtils.h" />
+    <ClInclude Include="Source\IndexBuffer.h" />
     <ClInclude Include="Source\Utils.h" />
+    <ClInclude Include="Source\VertexBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
