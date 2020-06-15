@@ -9,6 +9,7 @@
 #include "glUtils.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -118,9 +119,11 @@ int main(void)
 			2,3,0
 		};
 		std::cout << glGetString(GL_VERSION) << std::endl;
+		VertexArray va;
 		VertexBuffer vb(vertexPositions,8*sizeof(float));
-		GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr));
-		GLCall(glEnableVertexAttribArray(0));
+		VertexBufferLayout layout;
+		layout.Push<float>(2);
+		va.AddBuffer(vb, layout);
 		IndexBuffer ib(indices,6);
 		ShaderProgramSource shaderSource = ParseShader("Resources/Shaders/BasicTriangle.shader");	
 		unsigned int shader = CreateShader(shaderSource.VertexShader, shaderSource.FragmentShader);
