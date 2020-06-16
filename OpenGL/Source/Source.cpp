@@ -1,10 +1,9 @@
 #include <assert.h>
 
-
-
 #include "glUtils.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "Renderer.h"
 #include "Utils.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
@@ -53,14 +52,14 @@ int main(void)
 		IndexBuffer ib(indices,6);
 		Shader basicShader("Resources/Shaders/BasicTriangle.shader");
 		basicShader.Bind();
+		Renderer renderer;
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
-		{
-			glClear(GL_COLOR);
-
-			//glDrawArrays(GL_TRIANGLES,0,3);
+		{			
+			renderer.Clear(GL_COLOR_BUFFER_BIT);
+						
 			basicShader.SetUniform4f("u_Color", GetNCV(RandomInRange(1, 255)), GetNCV(RandomInRange(1, 255)), GetNCV(RandomInRange(1, 255)), 1.0f);
-			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+			renderer.Draw(va,ib,basicShader);
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);

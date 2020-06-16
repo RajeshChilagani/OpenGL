@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\IndexBuffer.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\Source.cpp" />
@@ -164,6 +165,7 @@
     <None Include="Resources\Shaders\BasicTriangle.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\glUtils.h" />
     <ClInclude Include="Source\IndexBuffer.h" />
     <ClInclude Include="Source\Shader.h" />
