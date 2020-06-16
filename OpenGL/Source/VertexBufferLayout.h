@@ -2,7 +2,9 @@
 #include <vector>
 
 #include "glUtils.h"
+
 #include <GL/glew.h>
+
 struct VertexBufferLayoutElement
 {
 	unsigned int type;

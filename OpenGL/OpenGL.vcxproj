@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\IndexBuffer.cpp" />
+    <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\Source.cpp" />
     <ClCompile Include="Source\VertexBuffer.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="Source\glUtils.h" />
     <ClInclude Include="Source\IndexBuffer.h" />
+    <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Utils.h" />
     <ClInclude Include="Source\VertexBuffer.h" />
     <ClInclude Include="Source\VertexBufferLayout.h" />

@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
+
 #include <GL/glew.h>
+
 static const char* GlErrorValues[] = { "Inavlid Enum","Invalid Value","Invalid Operation", "Stack Overflow","Stack_UnderFlow","Out Of Memeory" };
 #define GetGlErrorString(x) (((x-0x500)>=0 && (x-0x500<6))?GlErrorValues[x-0x500]:"UnKnown")
 #define ASSERT(x) if(!(x)) __debugbreak();
