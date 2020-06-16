@@ -158,8 +158,10 @@
     <ClCompile Include="Source\IndexBuffer.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\Source.cpp" />
+    <ClCompile Include="Source\Vendor\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\VertexBuffer.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\BasicTriangle.shader" />
@@ -170,9 +172,11 @@
     <ClInclude Include="Source\IndexBuffer.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Utils.h" />
+    <ClInclude Include="Source\Vendor\stb_image\stb_image.h" />
     <ClInclude Include="Source\VertexBuffer.h" />
     <ClInclude Include="Source\VertexBufferLayout.h" />
     <ClInclude Include="Source\VertexArray.h" />
+    <ClInclude Include="Source\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

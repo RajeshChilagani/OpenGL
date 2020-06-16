@@ -20,6 +20,7 @@ public:
 	~Shader();
 	void Bind() const;
 	void Unbind() const;
+	void SetUniform1i(const std::string& i_Name, int v);
 	void SetUniform4f(const std::string& i_Name, float v1, float v2, float v3, float v4);
 private:
 	ShaderProgramSource ParseShader(const std::string& i_FilePath);
