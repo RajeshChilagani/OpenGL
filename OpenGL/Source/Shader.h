@@ -2,7 +2,7 @@
 #include <string>
 #include <unordered_map>
 
-
+#include "glm/glm.hpp"
 struct ShaderProgramSource
 {
 	std::string VertexShader;
@@ -22,6 +22,7 @@ public:
 	void Unbind() const;
 	void SetUniform1i(const std::string& i_Name, int v);
 	void SetUniform4f(const std::string& i_Name, float v1, float v2, float v3, float v4);
+	void SetUniformMat4f(const std::string& i_Name, glm::mat4& matrix);
 private:
 	ShaderProgramSource ParseShader(const std::string& i_FilePath);
 	unsigned int CreateShader(const std::string i_VertexShader, const std::string i_FragmentShader);
