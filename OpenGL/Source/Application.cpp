@@ -25,7 +25,7 @@ int main(void)
 	/* Initialize the library */
 	if (!glfwInit())
 		return -1;
-	window = glfwCreateWindow(1280, 720, "OPEN GL", NULL, NULL);  //Create Window
+	window = glfwCreateWindow(1920, 1080, "OPEN GL", NULL, NULL);  //Create Window
 	if (!window)
 	{
 		glfwTerminate();
@@ -64,8 +64,9 @@ int main(void)
 		IndexBuffer ib(indices,6);
 		
 		Texture texture("Resources/Textures/VegetaSSG.png");
-		texture.Bind(1);
-
+		
+		Texture texture2("Resources/Textures/GokuSSb.png");
+		
 		glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-0.1f,0.0f,0.0f));
 		
@@ -85,7 +86,10 @@ int main(void)
 		ib.Unbind();
 		basicShader.Unbind();
 		
-		glm::vec3 transalation(0.0f, 0.0f, 0.0f);
+		glm::vec3 GokuT(0.5f, 0.0f, 0.0f);
+		glm::vec3 GokuS(1.0f, 1.0f, 1.0f);
+		glm::vec3 VegetaT(0.5f, 0.0f, 0.0f);
+		glm::vec3 VegetaS(1.0f, 1.0f, 1.0f);
 		ImVec4 clear_color = ImVec4(GetNCV(237), GetNCV(237), GetNCV(237), 1.00f);
 		ImVec4 filter_color = ImVec4(GetNCV(237), GetNCV(237), GetNCV(237), 1.00f);
 		/* Loop until the user closes the window */
@@ -97,26 +101,51 @@ int main(void)
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), transalation);
-			glm::mat4 mvp = proj * view * model;
+			
 
 			basicShader.Bind();
-			//basicShader.SetUniform4f("u_Color", GetNCV(RandomInRange(1, 255)), 1.0f, 1.0f, 1.0f);
 			basicShader.SetUniform4f("u_Color", filter_color.x, filter_color.y, filter_color.z, filter_color.z);
-			basicShader.SetUniformMat4f("u_MVP", mvp);
-			renderer.Draw(va,ib,basicShader);
+			{
+				texture.Bind();
+				basicShader.SetUniform1i("u_Texture", 0);
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), VegetaT) * glm::scale(glm::mat4(1.0f), VegetaS);
+				glm::mat4 mvp = proj * view * model;
+				basicShader.SetUniformMat4f("u_MVP", mvp);
+				renderer.Draw(va, ib, basicShader);
+			}
+			{
+				texture2.Bind();
+				basicShader.SetUniform1i("u_Texture", 0);
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), GokuT) * glm::scale(glm::mat4(1.0f),GokuS);
+				glm::mat4 mvp = proj * view * model;
+				basicShader.SetUniformMat4f("u_MVP", mvp);
+				renderer.Draw(va, ib, basicShader);
+			}
+			
 			/*ImGUi Window*/
 			{
-				ImGui::Begin("Interact");                               // Create a window called "Hello, world!" and append into it.
+				ImGui::Begin("Vegeta");                               // Create a window called "Hello, world!" and append into it.
 
-				ImGui::SliderFloat3("Translation", &transalation.x, -1.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat3("Translate", &VegetaT.x, -1.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat3("Scale", &VegetaS.x, -1.0f, 1.0f);
 				ImGui::ColorEdit3("Background Color", (float*)&clear_color); // Edit 3 floats representing a color
 				ImGui::ColorEdit3("Filter Color", (float*)&filter_color);
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-				
+
 				ImGui::End();
 			}
 			/**/
+			{
+				ImGui::Begin("Goku");
+
+				ImGui::SliderFloat3("Translate", &GokuT.x, -1.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat3("Sacle", &GokuS.x, -1.0f, 1.0f);
+				ImGui::ColorEdit3("Background Color", (float*)&clear_color); // Edit 3 floats representing a color
+				ImGui::ColorEdit3("Filter Color", (float*)&filter_color);
+
+				ImGui::End();
+			}
+
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 			GLCall(glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w));

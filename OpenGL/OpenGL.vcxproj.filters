@@ -1354,4 +1354,7 @@
     <ClCompile Include="Source\VertexArray.cpp" />
     <ClCompile Include="Source\VertexBuffer.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\BasicTriangle.shader" />
+  </ItemGroup>
 </Project>
