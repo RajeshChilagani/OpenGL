@@ -68,7 +68,7 @@ int main(void)
 		Texture texture2("Resources/Textures/GokuSSb.png");
 		
 		glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-0.1f,0.0f,0.0f));
+		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f,0.5f,0.0f));
 		
 		
 		Shader basicShader("Resources/Shaders/BasicTriangle.shader");
@@ -87,9 +87,10 @@ int main(void)
 		basicShader.Unbind();
 		
 		glm::vec3 GokuT(0.5f, 0.0f, 0.0f);
-		glm::vec3 GokuS(1.0f, 1.0f, 1.0f);
-		glm::vec3 VegetaT(0.5f, 0.0f, 0.0f);
-		glm::vec3 VegetaS(1.0f, 1.0f, 1.0f);
+		glm::vec3 GokuS(0.8f, 1.0f, 1.0f);
+		glm::vec3 VegetaT(-0.5f, 0.0f, 0.0f);
+		glm::vec3 VegetaS(-1.0f, 1.0f, 1.0f);
+		glm::vec3 Camera(0.0f, 0.0f, 0.0f);
 		ImVec4 clear_color = ImVec4(GetNCV(237), GetNCV(237), GetNCV(237), 1.00f);
 		ImVec4 filter_color = ImVec4(GetNCV(237), GetNCV(237), GetNCV(237), 1.00f);
 		/* Loop until the user closes the window */
@@ -102,7 +103,7 @@ int main(void)
 			ImGui::NewFrame();
 
 			
-
+			view = glm::translate(glm::mat4(1.0f), Camera);
 			basicShader.Bind();
 			basicShader.SetUniform4f("u_Color", filter_color.x, filter_color.y, filter_color.z, filter_color.z);
 			{
@@ -126,6 +127,7 @@ int main(void)
 			{
 				ImGui::Begin("Vegeta");                               // Create a window called "Hello, world!" and append into it.
 
+				ImGui::SliderFloat3("Camera", &Camera.x, -1.0f, 1.0f);
 				ImGui::SliderFloat3("Translate", &VegetaT.x, -1.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 				ImGui::SliderFloat3("Scale", &VegetaS.x, -1.0f, 1.0f);
 				ImGui::ColorEdit3("Background Color", (float*)&clear_color); // Edit 3 floats representing a color
