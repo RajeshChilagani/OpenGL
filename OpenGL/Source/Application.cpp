@@ -150,7 +150,8 @@ int main(void)
 
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-			GLCall(glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
+			//GLCall(glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
+			GLCall(glClearColor(GetNCV(RandomInRange(0,255)), GetNCV(RandomInRange(0, 255)), GetNCV(RandomInRange(0, 255)), clear_color.w));
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
 
